@@ -3,7 +3,7 @@
 # Author: mozahzah
 
 cmake_minimum_required(VERSION 3.29)
-project(IEFxRack VERSION 1.0.0 LANGUAGES CXX)
+project(IEFxRack VERSION 1.0.0 LANGUAGES C CXX)
 
 # BEGIN misc function definitions
 
