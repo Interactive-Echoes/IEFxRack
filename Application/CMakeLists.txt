@@ -53,7 +53,7 @@ foreach(DEPENDENCY ${DEPENDENCIES})
   endif()
 endforeach()
 
-begin_section_message("Setting packaging settings for IEMidi")
+begin_section_message("Setting packaging settings for ${PROJECT_NAME}")
 set(CPACK_PACKAGE_NAME "${PROJECT_NAME}")
 set(CPACK_PACKAGE_VENDOR "Interactive Echoes")
 set(CPACK_PACKAGE_DIRECTORY "${CMAKE_SOURCE_DIR}/package")
@@ -87,7 +87,7 @@ if(WIN32)
     goto post_vulkanRT
     
     vulkanRT_not_found:
-    MessageBox MB_YESNO \"VulkanRT must be installed for IEMidi to work, do you want to install VulkanRT now?\" IDYES install_vulkanRT IDNO post_vulkanRT
+    MessageBox MB_YESNO \"VulkanRT must be installed for IEFxRack to work, do you want to install VulkanRT now?\" IDYES install_vulkanRT IDNO post_vulkanRT
 
     install_vulkanRT:
     ExecWait \"\$INSTDIR\\Requirements\\VulkanRT-1.3.290.0-Installer.exe\"
@@ -110,7 +110,7 @@ elseif(APPLE)
     INSTALL_RPATH "@executable_path/../Frameworks"
     BUILD_RPATH "@executable_path/../Frameworks"
     MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
-    MACOSX_BUNDLE_GUI_IDENTIFIER "com.interactive-echoes.iemidi"
+    MACOSX_BUNDLE_GUI_IDENTIFIER "com.interactive-echoes.iefxrack"
     MACOSX_BUNDLE_ICON_FILE "IE-Brand-Kit/IE-Logo-NoBg-512.icns")
 
   install(DIRECTORY "${CMAKE_BINARY_DIR}/Resources" DESTINATION "${BUNDLE_PATH}/Contents" COMPONENT Bundle)
