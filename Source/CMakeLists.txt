@@ -6,16 +6,19 @@ cmake_minimum_required(VERSION 3.29)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 file(GLOB SOURCE_FILES "./*.cpp")
-add_library(LIEFxRack SHARED ${SOURCE_FILES})
+add_library(LIEFxRack STATIC ${SOURCE_FILES})
 target_include_directories(LIEFxRack PUBLIC "./")
 file(GLOB HEADER_FILES "./*.h")
 set_property(TARGET LIEFxRack PROPERTY PUBLIC_HEADER ${HEADER_FILES})
 target_link_libraries(LIEFxRack PUBLIC IECore)
-target_link_libraries(LIEFxRack PUBLIC juce::juce_core 
-juce::juce_audio_utils
-juce::juce_osc
-juce::juce_audio_basics
-juce::juce_dsp)
+add_library(Juce INTERFACE)
+target_link_libraries(Juce INTERFACE 
+  juce::juce_core 
+  juce::juce_audio_utils
+  juce::juce_osc
+  juce::juce_audio_basics
+  juce::juce_dsp)
+target_link_libraries(LIEFxRack PUBLIC Juce)
 
 set_target_properties(LIEFxRack PROPERTIES 
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
