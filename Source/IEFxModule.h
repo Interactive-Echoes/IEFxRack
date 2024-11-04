@@ -20,6 +20,10 @@ public:
     virtual void Draw() const;
 
 public:
+    void LinkModule(const std::shared_ptr<IEFxModule>& NextModule);
+    void UnlinkModule();
+
+public:
     const juce::String getName() const override;
     double getTailLengthSeconds() const override;
     

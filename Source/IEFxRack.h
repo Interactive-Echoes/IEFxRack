@@ -16,7 +16,7 @@ class IEFxRack : public juce::AudioProcessorPlayer
 {
 public:
     IEFxRack();
-    ~IEFxRack() {};
+    ~IEFxRack();
     IERenderer& GetRenderer() { return *m_Renderer; }
     juce::AudioDeviceManager& GetAudioDeviceManager() { return *m_AudioDeviceManager; }
 

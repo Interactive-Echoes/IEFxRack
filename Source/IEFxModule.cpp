@@ -12,10 +12,17 @@ IEFxModule::IEFxModule(const juce::String& Name)
 
 void IEFxModule::Draw() const
 {
-    if (m_NextModule)
-    {
-        m_NextModule->Draw();
-    }
+   // Draw
+}
+
+void IEFxModule::LinkModule(const std::shared_ptr<IEFxModule>& NextModule)
+{
+    m_NextModule = NextModule;
+}
+
+void IEFxModule::UnlinkModule()
+{
+    m_NextModule.reset();
 }
 
 const juce::String IEFxModule::getName() const
