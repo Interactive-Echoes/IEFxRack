@@ -12,7 +12,9 @@ IEFxModule::IEFxModule(const juce::String& Name)
 
 void IEFxModule::Draw() const
 {
-   // Draw
+    ImGui::SetSmartCursorPosYRelative(0.5f);
+    ImGui::CenteredText(m_Name.toRawUTF8());
+    ImGui::CenteredText(m_ProgramNames.back().toRawUTF8());
 }
 
 void IEFxModule::LinkModule(const std::shared_ptr<IEFxModule>& NextModule)

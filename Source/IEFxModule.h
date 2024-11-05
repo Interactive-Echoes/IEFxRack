@@ -10,8 +10,29 @@
 #include "juce_audio_processors/juce_audio_processors.h"
 #include "juce_core/juce_core.h"
 
+enum IEFxModuleType
+{
+    None,
+    Oscillator,
+    Input,
+    Reverb,
+    Delay,
+    Chorus,
+
+    // Count
+    Count
+};
+
 class IEFxModule : public juce::AudioProcessor
 {
+public:
+    template<typename FxModuleClass>
+    static std::shared_ptr<IEFxModule> CreateFxModule(const juce::String& Name)
+    {
+        static_assert(std::is_base_of<IEFxModule, FxModuleClass>::value, "Module class must be inherited from IEFxModule");
+        return std::make_shared<FxModuleClass>(Name);
+    }
+
 public:
     IEFxModule(const juce::String& Name);
     ~IEFxModule() override {}
@@ -40,12 +61,13 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     void getStateInformation (juce::MemoryBlock& destData) override {}
-    void setStateInformation (const void* data, int sizeInBytes) override {}
+    void setStateInformation(const void* data, int sizeInBytes) override {}
 
 protected:
     std::shared_ptr<IEFxModule> m_NextModule;
 
 private:
+    IEFxModuleType m_FxModuleType = IEFxModuleType::None;
     juce::String m_Name;
     std::vector<juce::String> m_ProgramNames;
     int m_CurrentProgramIndex = 0;

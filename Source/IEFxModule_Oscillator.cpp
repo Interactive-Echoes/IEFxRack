@@ -21,10 +21,19 @@ void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock
     
     m_Osc.setFrequency(440.0f);
     m_Gain.setGainLinear(0.5f);
+
+    if (m_NextModule)
+    {
+        m_NextModule->prepareToPlay(SampleRate, SamplesPerBlock);
+    }
 }
 
 void IEFxModule_Oscillator::releaseResources()
 {
+    if (m_NextModule)
+    {
+        m_NextModule->releaseResources();
+    }
 }
 
 void IEFxModule_Oscillator::processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer)

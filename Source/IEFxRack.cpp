@@ -5,6 +5,7 @@
 #include "IEFxRack.h"
 
 #include "IEFxModule_Oscillator.h"
+#include "IEFxModule_Reverb.h"
 
 IEFxRack::IEFxRack() 
     :   m_Renderer(std::make_unique<IERenderer_Vulkan>()),
@@ -71,6 +72,7 @@ void IEFxRack::Draw()
     const int ModuleSize = m_Modules.size();
     for (int i = 0; i < ModuleSize; i++)
     {
+        ImGui::PushID(i);
         std::string UniqueWindowName = std::format("Module{}", i);
 
         const ImVec2 ParentWindowSize = ImGui::GetWindowSize();
@@ -88,17 +90,46 @@ void IEFxRack::Draw()
         else
         {
             ImGui::SetSmartCursorPosRelative(ImVec2(0.5f, 0.5f));
-            if (ImGui::Button("+"))
+
+            static const char* ModuleTypes[]{ "None", "Oscillator", "Input", "Reverb", "Delay", "Chorus" };
+            int SelectedTypeInt = 0;
+            if (ImGui::Combo("+", &SelectedTypeInt, ModuleTypes, IM_ARRAYSIZE(ModuleTypes)))
             {
-                Module = std::make_shared<IEFxModule_Oscillator>(juce::String("Default"));
+                IEFxModuleType SelectedModuleType = static_cast<IEFxModuleType>(SelectedTypeInt);
+                switch (SelectedModuleType)
+                {
+                    case IEFxModuleType::Oscillator:
+                    {
+                        Module = IEFxModule::CreateFxModule<IEFxModule_Oscillator>(juce::String("Oscillator"));
+                        break;
+                    }
+                    case IEFxModuleType::Input:
+                    {
+                        break;
+                    }
+                    case IEFxModuleType::Reverb:
+                    {
+                        Module = IEFxModule::CreateFxModule<IEFxModule_Reverb>(juce::String("Reverb"));
+                        break;
+                    }
+                    case IEFxModuleType::Delay:
+                    {
+                        break;
+                    }
+                    case IEFxModuleType::Chorus:
+                    {
+                        break;
+                    }
+                }
+
                 if (i == 0)
                 {
                     setProcessor(Module.get());
                 }
-                
-                if (i < ModuleSize - 1)
+                else if (const std::shared_ptr<IEFxModule>& PrevModule = m_Modules[i - 1])
                 {
-                    Module->LinkModule(m_Modules[i + 1]);
+                    PrevModule->LinkModule(Module);
+                    audioDeviceAboutToStart(m_AudioDeviceManager->getCurrentAudioDevice());
                 }
             }
         }
@@ -113,6 +144,7 @@ void IEFxRack::Draw()
         {
             ModulesPerLine = 0;
         }
+        ImGui::PopID();
     }
 
     ImGui::PopStyleVar(1);

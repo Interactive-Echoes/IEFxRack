@@ -8,23 +8,13 @@
 
 #include "IEFxModule.h"
 
-#include "juce_dsp/juce_dsp.h"
-
-class IEFxModule_Oscillator : public IEFxModule 
+class IEFxModule_Input : public IEFxModule 
 {
 public:
-    IEFxModule_Oscillator(const juce::String& Name) : IEFxModule(Name) {}
-
-public:
-    void SetFrequency(float Frequency);
+    IEFxModule_Input(const juce::String& Name) : IEFxModule(Name) {}
 
 public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;
     void releaseResources() override;
     void processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer) override;
-
-private:
-    juce::dsp::Oscillator<float> m_Osc{ [](float x)
-    {return 2.0f * (x / juce::MathConstants<float>::twoPi) - 1.0f;} };
-    juce::dsp::Gain<float> m_Gain;
 };

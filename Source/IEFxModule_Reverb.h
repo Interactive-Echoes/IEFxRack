@@ -10,13 +10,16 @@
 
 #include "juce_dsp/juce_dsp.h"
 
-class IEFxModule_Oscillator : public IEFxModule 
+class IEFxModule_Reverb : public IEFxModule 
 {
 public:
-    IEFxModule_Oscillator(const juce::String& Name) : IEFxModule(Name) {}
-
-public:
-    void SetFrequency(float Frequency);
+    IEFxModule_Reverb(const juce::String& Name) : IEFxModule(Name)
+    {
+        juce::Reverb::Parameters Params;
+        Params.roomSize = 1.0f;
+        Params.dryLevel = 1.0f;
+        m_Reverb.setParameters(Params);
+    }
 
 public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;
@@ -24,7 +27,5 @@ public:
     void processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer) override;
 
 private:
-    juce::dsp::Oscillator<float> m_Osc{ [](float x)
-    {return 2.0f * (x / juce::MathConstants<float>::twoPi) - 1.0f;} };
-    juce::dsp::Gain<float> m_Gain;
+    juce::Reverb m_Reverb;
 };
