@@ -6,12 +6,12 @@
 
 void IEFxModule_Oscillator::SetFrequency(float Frequency)
 {
-    m_Osc.setFrequency(Frequency);
+    m_Osc.setFrequency(Frequency); // Not thread safe
 }
 
 void IEFxModule_Oscillator::SetGain(float Gain)
 {
-    m_Gain.setGainLinear(Gain);
+    m_Gain.setGainLinear(Gain); // Not thread safe
 }
 
 void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock)

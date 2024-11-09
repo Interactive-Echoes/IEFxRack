@@ -6,7 +6,7 @@
 
 void IEFxModule_Reverb::SetReverbParams(const juce::Reverb::Parameters& Params)
 {
-    m_Reverb.setParameters(Params);
+    m_Reverb.setParameters(Params); // Not thread safe
 }
 
 void IEFxModule_Reverb::prepareToPlay(double SampleRate, int SamplesPerBlock)
