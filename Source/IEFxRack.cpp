@@ -4,6 +4,7 @@
 
 #include "IEFxRack.h"
 
+#include "IEFxModule_Delay.h"
 #include "IEFxModule_Oscillator.h"
 #include "IEFxModule_Reverb.h"
 
@@ -11,12 +12,14 @@ IEFxRack::IEFxRack()
     :   m_Renderer(std::make_unique<IERenderer_Vulkan>()),
         m_AudioDeviceManager(std::make_unique<juce::AudioDeviceManager>())
 {
-    m_AudioDeviceManager->initialiseWithDefaultDevices(2, 2);
-    m_AudioDeviceManager->addAudioCallback(this);
-    
-    // Test
-    m_Modules.resize(8);
-    audioDeviceAboutToStart(m_AudioDeviceManager->getCurrentAudioDevice());
+    if (m_AudioDeviceManager)
+    {
+        m_AudioDeviceManager->initialiseWithDefaultDevices(2, 2);
+        m_AudioDeviceManager->addAudioCallback(this);
+
+        m_Modules.resize(8);
+        audioDeviceAboutToStart(m_AudioDeviceManager->getCurrentAudioDevice());
+    }
 }
 
 IEFxRack::~IEFxRack()
@@ -114,6 +117,7 @@ void IEFxRack::Draw()
                     }
                     case IEFxModuleType::Delay:
                     {
+                        Module = IEFxModule::CreateFxModule<IEFxModule_Delay>(juce::String("Delay"));
                         break;
                     }
                     case IEFxModuleType::Chorus:
@@ -129,7 +133,10 @@ void IEFxRack::Draw()
                 else if (const std::shared_ptr<IEFxModule>& PrevModule = m_Modules[i - 1])
                 {
                     PrevModule->LinkModule(Module);
-                    audioDeviceAboutToStart(m_AudioDeviceManager->getCurrentAudioDevice());
+                    if (m_AudioDeviceManager)
+                    {
+                        audioDeviceAboutToStart(m_AudioDeviceManager->getCurrentAudioDevice());
+                    }
                 }
             }
         }

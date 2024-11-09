@@ -8,18 +8,15 @@
 
 #include "IEFxModule.h"
 
-#include "juce_dsp/juce_dsp.h"
+#include "juce_audio_basics/juce_audio_basics.h"
 
 class IEFxModule_Reverb : public IEFxModule 
 {
 public:
-    IEFxModule_Reverb(const juce::String& Name) : IEFxModule(Name)
-    {
-        juce::Reverb::Parameters Params;
-        Params.roomSize = 1.0f;
-        Params.dryLevel = 1.0f;
-        m_Reverb.setParameters(Params);
-    }
+    IEFxModule_Reverb(const juce::String& Name) : IEFxModule(Name) {}
+
+public:
+    void SetReverbParams(const juce::Reverb::Parameters& Params);
 
 public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;

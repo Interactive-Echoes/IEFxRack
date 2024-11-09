@@ -19,11 +19,20 @@ void IEFxModule::Draw() const
 
 void IEFxModule::LinkModule(const std::shared_ptr<IEFxModule>& NextModule)
 {
-    m_NextModule = NextModule;
+    UnlinkModule();
+    if (NextModule)
+    {
+        m_NextModule = NextModule;
+        m_NextModule->setPlayConfigDetails(getTotalNumInputChannels(), getTotalNumOutputChannels(), getSampleRate(), getBlockSize());
+    }
 }
 
 void IEFxModule::UnlinkModule()
 {
+    if (m_NextModule)
+    {
+        m_NextModule->releaseResources();
+    }
     m_NextModule.reset();
 }
 

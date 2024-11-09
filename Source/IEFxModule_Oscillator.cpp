@@ -9,6 +9,11 @@ void IEFxModule_Oscillator::SetFrequency(float Frequency)
     m_Osc.setFrequency(Frequency);
 }
 
+void IEFxModule_Oscillator::SetGain(float Gain)
+{
+    m_Gain.setGainLinear(Gain);
+}
+
 void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock)
 {
     juce::dsp::ProcessSpec Spec;
@@ -20,7 +25,7 @@ void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock
     m_Gain.prepare(Spec);
     
     m_Osc.setFrequency(440.0f);
-    m_Gain.setGainLinear(0.5f);
+    m_Gain.setGainLinear(0.2f);
 
     if (m_NextModule)
     {
@@ -30,6 +35,9 @@ void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock
 
 void IEFxModule_Oscillator::releaseResources()
 {
+    m_Osc.reset();
+    m_Gain.reset();
+    
     if (m_NextModule)
     {
         m_NextModule->releaseResources();
@@ -38,14 +46,21 @@ void IEFxModule_Oscillator::releaseResources()
 
 void IEFxModule_Oscillator::processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer)
 {
-    for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); i++)
-    {
-       AudioBuffer.clear(i, 0, AudioBuffer.getNumSamples()); 
-    }
+    AudioBuffer.clear();
     
-    juce::dsp::AudioBlock<float> AudioBlock{ AudioBuffer };
-    m_Osc.process(juce::dsp::ProcessContextReplacing<float>(AudioBlock));
-    m_Gain.process(juce::dsp::ProcessContextReplacing<float>(AudioBlock));
+    m_SampleCount += AudioBuffer.getNumSamples();
+    if (m_SampleCount > getSampleRate())
+    {
+        m_SampleCount = 0;
+        m_bGainOn = !m_bGainOn;
+    }
+
+    if (m_bGainOn)
+    {
+        juce::dsp::AudioBlock<float> AudioBlock{ AudioBuffer };
+        m_Osc.process(juce::dsp::ProcessContextReplacing<float>(AudioBlock));
+        m_Gain.process(juce::dsp::ProcessContextReplacing<float>(AudioBlock));
+    }
 
     if (m_NextModule)
     {

@@ -17,6 +17,7 @@ public:
 
 public:
     void SetFrequency(float Frequency);
+    void SetGain(float Gain);
 
 public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;
@@ -27,4 +28,8 @@ private:
     juce::dsp::Oscillator<float> m_Osc{ [](float x)
     {return 2.0f * (x / juce::MathConstants<float>::twoPi) - 1.0f;} };
     juce::dsp::Gain<float> m_Gain;
+
+private:
+    int m_SampleCount = 0; // Test
+    bool m_bGainOn = false;
 };
