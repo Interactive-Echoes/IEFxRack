@@ -124,6 +124,11 @@ void IEFxRack::Draw()
                     {
                         break;
                     }
+                    case IEFxModuleType::None:
+                    case IEFxModuleType::Count:
+                    {
+                        break;
+                    }
                 }
 
                 if (i == 0)
