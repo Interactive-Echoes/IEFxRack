@@ -24,5 +24,9 @@ public:
     void processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer) override;
 
 private:
+    /* Real Time Modifiable Variables */
+    juce::Reverb::Parameters m_ReverbParams;
+
+private:
     juce::Reverb m_Reverb;
 };

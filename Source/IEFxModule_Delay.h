@@ -16,15 +16,23 @@ public:
     IEFxModule_Delay(const juce::String& Name) : IEFxModule(Name) {}
 
 public:
+    void SetDelayTime(float DelayTime);
+    void SetFeedback(float Feedback);
+    void SetMix(float Mix);
+
+public:
+    void Draw() override;
+
+public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;
     void releaseResources() override;
     void processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer) override;
 
 private:
     /* Real Time Modifiable Variables */
-    float m_DelayTime = 0.5f;
-    float m_Feedback = 0.5f;
-    float m_Mix = 0.5f;
+    std::atomic<float> m_DelayTime{0.5f};
+    std::atomic<float> m_Feedback{0.5f};
+    std::atomic<float> m_Mix{0.5f};
 
 private:
     float m_SampleRate = 0.0f;

@@ -10,7 +10,7 @@ IEFxModule::IEFxModule(const juce::String& Name)
     m_ProgramNames.push_back(juce::String("Default"));
 }
 
-void IEFxModule::Draw() const
+void IEFxModule::Draw()
 {
     ImGui::SetSmartCursorPosYRelative(0.5f);
     ImGui::CenteredText(m_Name.toRawUTF8());

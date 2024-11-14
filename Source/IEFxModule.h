@@ -38,7 +38,7 @@ public:
     ~IEFxModule() override {}
 
 public:
-    virtual void Draw() const;
+    virtual void Draw();
 
 public:
     void LinkModule(const std::shared_ptr<IEFxModule>& NextModule);

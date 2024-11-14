@@ -10,14 +10,17 @@
 
 #include "juce_dsp/juce_dsp.h"
 
-class IEFxModule_Oscillator : public IEFxModule 
+class IEFxModule_Oscillator : public IEFxModule
 {
 public:
     IEFxModule_Oscillator(const juce::String& Name) : IEFxModule(Name) {}
 
 public:
-    void SetFrequency(float Frequency);
+    void SetFrequency(int Frequency);
     void SetGain(float Gain);
+
+public:
+    void Draw() override;
 
 public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;
@@ -26,8 +29,15 @@ public:
 
 private:
     juce::dsp::Oscillator<float> m_Osc{ [](float x)
-    {return 2.0f * (x / juce::MathConstants<float>::twoPi) - 1.0f;} };
+    {
+        return static_cast<int>(2 * (x / juce::MathConstants<float>::twoPi) - 1);
+    }};
     juce::dsp::Gain<float> m_Gain;
+
+private:
+    /* Real Time Modifiable Variables */
+    std::atomic<int> m_Frequency{440};
+    std::atomic<float> m_GainValue{ 0.2f };
 
 private:
     int m_SampleCount = 0; // Test

@@ -4,14 +4,29 @@
 
 #include "IEFxModule_Oscillator.h"
 
-void IEFxModule_Oscillator::SetFrequency(float Frequency)
+void IEFxModule_Oscillator::SetFrequency(int Frequency)
 {
-    m_Osc.setFrequency(Frequency); // Not thread safe
+    m_Frequency.store(Frequency, std::memory_order_relaxed);
 }
 
 void IEFxModule_Oscillator::SetGain(float Gain)
 {
-    m_Gain.setGainLinear(Gain); // Not thread safe
+    m_GainValue.store(Gain, std::memory_order_relaxed);
+}
+
+void IEFxModule_Oscillator::Draw()
+{
+    thread_local int Frequency = m_Frequency.load(std::memory_order_relaxed);
+    if (ImGui::SliderInt("Frequency", &Frequency, 20, 20000))
+    {
+        SetFrequency(Frequency);
+    }
+
+    thread_local float GainValue = m_GainValue.load(std::memory_order_relaxed);
+    if (ImGui::SliderFloat("Gain", &GainValue, 0.0f, 1.0f, "%.2f"))
+    {
+        SetGain(GainValue);
+    }
 }
 
 void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock)
@@ -24,8 +39,8 @@ void IEFxModule_Oscillator::prepareToPlay(double SampleRate, int SamplesPerBlock
     m_Osc.prepare(Spec);
     m_Gain.prepare(Spec);
     
-    m_Osc.setFrequency(440.0f);
-    m_Gain.setGainLinear(0.2f);
+    m_Osc.setFrequency(m_Frequency.load(std::memory_order_relaxed));
+    m_Gain.setGainLinear(m_GainValue.load(std::memory_order_relaxed));
 
     if (m_NextModule)
     {
@@ -46,6 +61,18 @@ void IEFxModule_Oscillator::releaseResources()
 
 void IEFxModule_Oscillator::processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer)
 {
+    const int SelectedFrequency = m_Frequency.load(std::memory_order_relaxed);
+    if (m_Osc.getFrequency() != SelectedFrequency)
+    {
+        m_Osc.setFrequency(SelectedFrequency);
+    }
+
+    const float SelectedGainValue = m_GainValue.load(std::memory_order_relaxed);
+    if (std::abs(SelectedGainValue - m_Gain.getGainLinear()) > 0.01f)
+    {
+        m_Gain.setGainLinear(SelectedGainValue);
+    }
+
     AudioBuffer.clear();
     
     m_SampleCount += AudioBuffer.getNumSamples();
