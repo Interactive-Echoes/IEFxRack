@@ -21,19 +21,19 @@ void IEFxModule_Delay::SetMix(float Mix)
 
 void IEFxModule_Delay::Draw()
 {
-    thread_local float DelayTime = m_DelayTime.load(std::memory_order_relaxed);
+    static float DelayTime = m_DelayTime.load(std::memory_order_relaxed);
     if (ImGui::SliderFloat("Delay Time", &DelayTime, 0.0f, m_MaxDelayTime, "%.2f"))
     {
         SetDelayTime(DelayTime);
     }
 
-    thread_local float Feedback = m_Feedback.load(std::memory_order_relaxed);
+    static float Feedback = m_Feedback.load(std::memory_order_relaxed);
     if (ImGui::SliderFloat("Feedback", &Feedback, 0.0f, 1.0f, "%.2f"))
     {
         SetFeedback(Feedback);
     }
 
-    thread_local float Mix = m_Mix.load(std::memory_order_relaxed);
+    static float Mix = m_Mix.load(std::memory_order_relaxed);
     if (ImGui::SliderFloat("Mix", &Mix, 0.0f, 1.0f, "%.2f"))
     {
         SetMix(Mix);

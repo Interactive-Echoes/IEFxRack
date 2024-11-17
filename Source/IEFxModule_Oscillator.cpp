@@ -16,13 +16,13 @@ void IEFxModule_Oscillator::SetGain(float Gain)
 
 void IEFxModule_Oscillator::Draw()
 {
-    thread_local int Frequency = m_Frequency.load(std::memory_order_relaxed);
+    static int Frequency = m_Frequency.load(std::memory_order_relaxed);
     if (ImGui::SliderInt("Frequency", &Frequency, 20, 20000))
     {
         SetFrequency(Frequency);
     }
 
-    thread_local float GainValue = m_GainValue.load(std::memory_order_relaxed);
+    static float GainValue = m_GainValue.load(std::memory_order_relaxed);
     if (ImGui::SliderFloat("Gain", &GainValue, 0.0f, 1.0f, "%.2f"))
     {
         SetGain(GainValue);
