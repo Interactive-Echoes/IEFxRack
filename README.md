@@ -8,8 +8,8 @@
 
 # IEFxRack
 
-**IEFxRack** is IE’s cross-platform virtual module FX rack. A audio processing tool designed for both Windows and macOS.
-It offers a flexible, modular environment for creating and manipulating audio effects, utilizing the JUCE library for its robust audio framework and seamless integration across platforms.
+**IEFxRack** is IE’s cross-platform virtual module FX rack for Windows and macOS.
+It provides a modular environment for creating and shaping sounds, using the JUCE library as its audio framework.
 
 ## Third-Party Libraries Used
 - [IECore](https://github.com/mozahzah/IECore.git)
