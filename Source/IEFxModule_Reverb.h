@@ -7,6 +7,7 @@
 #include "IECore.h"
 
 #include "IEFxModule.h"
+#include "IESpinOnWriteObject.h"
 
 #include "juce_audio_basics/juce_audio_basics.h"
 
@@ -19,13 +20,16 @@ public:
     void SetReverbParams(const juce::Reverb::Parameters& Params);
 
 public:
+    void Draw() override;
+
+public:
     void prepareToPlay(double SampleRate, int SamplesPerBlock) override;
     void releaseResources() override;
     void processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer) override;
 
 private:
     /* Real Time Modifiable Variables */
-    juce::Reverb::Parameters m_ReverbParams;
+    IESpinOnWriteObject<juce::Reverb::Parameters> m_ReverbParams;
 
 private:
     juce::Reverb m_Reverb;

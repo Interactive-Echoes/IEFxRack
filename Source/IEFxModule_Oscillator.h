@@ -30,7 +30,7 @@ public:
 private:
     juce::dsp::Oscillator<float> m_Osc{ [](float x)
     {
-        return static_cast<int>(2 * (x / juce::MathConstants<float>::twoPi) - 1);
+        return static_cast<float>(2 * (x / juce::MathConstants<float>::twoPi) - 1);
     }};
     juce::dsp::Gain<float> m_Gain;
 
