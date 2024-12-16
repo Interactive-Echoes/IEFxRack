@@ -3,7 +3,7 @@
 ### Audio Thread Rules:
 - Consider Algorithm Complexity
 - Consider Data Structure Complexity (something like std::vector/arrays preferred)
-- No Locks, strive for atomic data (keep locks very minimal and careful)
+- No Locks, strive for atomic data (keep locks very minimal)
 - No memory allocations (Including resizing/adding/reallocating to std::vector)
 - No Logging
 - No OS Calls unless the OS guarantees real time performance (some embedded OS)
