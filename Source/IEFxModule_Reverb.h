@@ -4,10 +4,10 @@
 
 #pragma once
 
+#include "IEAsync.h"
 #include "IECore.h"
 
 #include "IEFxModule.h"
-#include "IESpinOnWriteObject.h"
 
 #include "juce_audio_basics/juce_audio_basics.h"
 

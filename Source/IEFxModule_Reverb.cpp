@@ -12,20 +12,38 @@ void IEFxModule_Reverb::SetReverbParams(const juce::Reverb::Parameters& Params)
 void IEFxModule_Reverb::Draw()
 {
     static juce::Reverb::Parameters ReverbParams;
-    if (ImGui::SliderFloat("Wet Level", &ReverbParams.wetLevel, 0.0f, 1.0f, "%.2f"))
+    bool bHasChanged = false;
+
+    static float MixLevel = 0.5f;
+    if (ImGui::SliderFloat("Mix Level", &MixLevel, 0.0f, 1.0f, "%.2f"))
+    {
+        ReverbParams.wetLevel = MixLevel;
+        ReverbParams.dryLevel = 1 - MixLevel;
+        bHasChanged = true;
+    }
+    if (ImGui::SliderFloat("Room Size", &ReverbParams.roomSize, 0.0f, 1.0f, "%.2f"))
+    {
+        bHasChanged = true;
+    }
+    if (ImGui::SliderFloat("Damping", &ReverbParams.damping, 0.0f, 1.0f, "%.2f"))
+    {
+        bHasChanged = true;
+    }
+    if (ImGui::SliderFloat("Width", &ReverbParams.width, 0.0f, 1.0f, "%.2f"))
+    {
+       bHasChanged = true;
+    }
+
+    if (bHasChanged)
     {
         SetReverbParams(ReverbParams);
-    } 
+    }
 }
 
 void IEFxModule_Reverb::prepareToPlay(double SampleRate, int SamplesPerBlock)
 {
-    juce::Reverb::Parameters Params;
-    Params.roomSize = 1.0f;
-    Params.dryLevel = 1.0f;
-
     m_Reverb.setSampleRate(SampleRate);
-    m_Reverb.setParameters(Params);
+    m_Reverb.setParameters(m_ReverbParams.LockForRead().Value);
 
     if (m_NextModule)
     {
@@ -45,12 +63,8 @@ void IEFxModule_Reverb::releaseResources()
 
 void IEFxModule_Reverb::processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer)
 {
-    if (const juce::Reverb::Parameters* const ReverbParamsPtr = m_ReverbParams.LockForRead())
-    {
-        const juce::Reverb::Parameters& ReverbParams = *ReverbParamsPtr;
-        m_Reverb.setParameters(ReverbParams);
-        m_ReverbParams.Unlock(ReverbParams);
-    }
+    const IESpinOnWriteObject<juce::Reverb::Parameters>::LockedValue& LockedReverbParams = m_ReverbParams.LockForRead();
+    m_Reverb.setParameters(LockedReverbParams.Value);
 
     if (AudioBuffer.getNumChannels() >= 2)
     {
