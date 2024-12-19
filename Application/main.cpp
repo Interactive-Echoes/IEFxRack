@@ -11,7 +11,7 @@ int main()
     juce::MessageManager::getInstance()->setCurrentThreadAsMessageThread();
     IEFxRack IEFxRackApp;
     IERenderer& Renderer = IEFxRackApp.GetRenderer();
-    if (Renderer.Initialize())
+    if (Renderer.Initialize(std::string("IEFxRack")))
     {
         if (ImGuiContext* const CreatedImGuiContext = ImGui::CreateContext())
         {
