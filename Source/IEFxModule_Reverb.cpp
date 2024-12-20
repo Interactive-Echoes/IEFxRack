@@ -63,8 +63,7 @@ void IEFxModule_Reverb::releaseResources()
 
 void IEFxModule_Reverb::processBlock(juce::AudioBuffer<float>& AudioBuffer, juce::MidiBuffer& MidiBuffer)
 {
-    const IESpinOnWriteObject<juce::Reverb::Parameters>::LockedValue& LockedReverbParams = m_ReverbParams.LockForRead();
-    m_Reverb.setParameters(LockedReverbParams.Value);
+    m_Reverb.setParameters(m_ReverbParams.LockForRead().Value);
 
     if (AudioBuffer.getNumChannels() >= 2)
     {
