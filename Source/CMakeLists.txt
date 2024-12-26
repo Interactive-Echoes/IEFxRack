@@ -11,6 +11,7 @@ target_include_directories(LIEFxRack PUBLIC "./")
 file(GLOB HEADER_FILES "./*.h")
 set_property(TARGET LIEFxRack PROPERTY PUBLIC_HEADER ${HEADER_FILES})
 target_link_libraries(LIEFxRack PUBLIC IECore)
+target_link_libraries(LIEFxRack PUBLIC IEConcurrency)
 add_library(Juce INTERFACE)
 target_link_libraries(Juce INTERFACE 
   juce::juce_core 
