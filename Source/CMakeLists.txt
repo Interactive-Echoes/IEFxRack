@@ -2,7 +2,7 @@
 # Copyright © 2024 Interactive Echoes. All rights reserved.
 # Author: mozahzah
 
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.20)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 file(GLOB SOURCE_FILES "./*.cpp")
@@ -11,6 +11,7 @@ target_include_directories(LIEFxRack PUBLIC "./")
 file(GLOB HEADER_FILES "./*.h")
 set_property(TARGET LIEFxRack PROPERTY PUBLIC_HEADER ${HEADER_FILES})
 target_link_libraries(LIEFxRack PUBLIC IECore)
+target_link_libraries(LIEFxRack PUBLIC IEConcurrency)
 add_library(Juce INTERFACE)
 target_link_libraries(Juce INTERFACE 
   juce::juce_core 

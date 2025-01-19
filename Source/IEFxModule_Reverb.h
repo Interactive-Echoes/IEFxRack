@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "IEAsync.h"
 #include "IECore.h"
+#include "IEConcurrency.h"
 
 #include "IEFxModule.h"
 

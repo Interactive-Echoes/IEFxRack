@@ -2,7 +2,7 @@
 # Copyright © 2024 Interactive Echoes. All rights reserved.
 # Author: mozahzah
 
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.20)
 project(IEFxRack VERSION 1.0.0 LANGUAGES C CXX)
 
 # BEGIN misc function definitions
@@ -34,6 +34,7 @@ message("\n------------------------------------------------------------")
 message("Configuring ThirdParty Libraries")
 message("\n------------------------------------------------------------")
 add_subdirectory(ThirdParty/IECore)
+add_subdirectory(ThirdParty/IEConcurrency)
 message("Configuring JUCE")
 set(JUCE_MODULES_ONLY TRUE)
 add_subdirectory(ThirdParty/JUCE)
