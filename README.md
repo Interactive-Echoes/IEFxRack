@@ -13,6 +13,7 @@ It provides a modular environment for creating and shaping sounds, using the JUC
 
 ## Third-Party Libraries Used
 - [IECore](https://github.com/mozahzah/IECore.git)
+- [IEConcurrency](https://github.com/mozahzah/IEConcurrency.git)
 - [JUCE](https://github.com/juce-framework/JUCE)
 - [Rapid YAML](https://github.com/biojppm/rapidyaml)
 
