@@ -1,9 +1,9 @@
 [submodule "ThirdParty/IECore"]
 	path = ThirdParty/IECore
-	url = https://github.com/mozahzah/IECore.git
+	url = https://github.com/interactive-echoes/IECore.git
 [submodule "ThirdParty/JUCE"]
 	path = ThirdParty/JUCE
 	url = https://github.com/juce-framework/JUCE.git
 [submodule "ThirdParty/IEConcurrency"]
 	path = ThirdParty/IEConcurrency
-	url = https://github.com/mozahzah/IEConcurrency.git
+	url = https://github.com/interactive-echoes/IEConcurrency.git
